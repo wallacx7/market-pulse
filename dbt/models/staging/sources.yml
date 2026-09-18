@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: silver
+    description: >
+      Camada Silver sincronizada do Delta Lake (Databricks) para o BigQuery.
+      Já vem limpa e agregada por janela de 1 minuto pelo job bronze_to_silver.
+    database: "{{ env_var('DBT_BQ_PROJECT', 'market-pulse-lakehouse') }}"
+    schema: silver
+    tables:
+      - name: price_aggregates
+        description: Agregações de preço por símbolo e janela de tempo de 1 minuto.
+        columns:
+          - name: window_start
+            description: Início da janela de agregação (UTC).
+          - name: window_end
+            description: Fim da janela de agregação (UTC).
+          - name: symbol
+            description: Símbolo do ativo (ex. BTCUSDT, IBM).
+          - name: avg_price
+            description: Preço médio no período.
+          - name: price_volatility
+            description: Desvio padrão do preço no período.
+          - name: min_price
+          - name: max_price
+          - name: total_volume
+          - name: tick_count

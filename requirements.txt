@@ -1,0 +1,11 @@
+# Camada de ingestão (única parte pensada para rodar localmente hoje).
+websockets>=12.0
+requests>=2.31
+python-dotenv>=1.0
+
+# Camada do agente (etapa 3) — descomentar quando for implementada.
+# google-cloud-bigquery>=3.20
+
+# dbt e PySpark têm requirements próprios (dbt-bigquery instalado num venv
+# separado do dbt/; PySpark roda no cluster do Databricks) e não entram aqui
+# para não inflar o ambiente local de ingestão.

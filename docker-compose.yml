@@ -1,0 +1,20 @@
+services:
+  binance-listener:
+    build:
+      context: .
+      dockerfile: ingestion/Dockerfile
+    command: python -m ingestion.binance_stream_listener
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  alphavantage-poller:
+    build:
+      context: .
+      dockerfile: ingestion/Dockerfile
+    command: python -m ingestion.alphavantage_poller
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

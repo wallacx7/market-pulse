@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pytest:
+    name: Ingestion unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run pytest
+        run: pytest tests/ -v
+
+  dbt-parse:
+    name: dbt parse (staging + marts)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt-bigquery
+        run: pip install dbt-bigquery
+
+      - name: Write dummy profile
+        # dbt parse only needs to build the manifest (jinja/YAML/ref/source graph);
+        # it never opens a connection, so an oauth stub is enough. No GCP
+        # credentials are used or required here.
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml <<'EOF'
+          market_pulse:
+            target: ci
+            outputs:
+              ci:
+                type: bigquery
+                method: oauth
+                project: ci-dummy-project
+                dataset: ci_dummy_dataset
+                threads: 1
+          EOF
+
+      - name: dbt deps && dbt parse
+        working-directory: dbt
+        run: |
+          dbt deps
+          dbt parse

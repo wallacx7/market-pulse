@@ -1,0 +1,19 @@
+# Copy to profiles.yml (or ~/.dbt/profiles.yml) and fill in your own project/dataset.
+# Not committed as `profiles.yml` — see dbt_project.yml's `profile: market_pulse`.
+market_pulse:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: your-gcp-project-id
+      dataset: dbt_yourname
+      keyfile: /absolute/path/to/service-account.json
+      threads: 4
+    prod:
+      type: bigquery
+      method: service-account
+      project: your-gcp-project-id
+      dataset: gold
+      keyfile: /absolute/path/to/service-account.json
+      threads: 4

@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: dim_ativo
+    description: Dimensão de ativos (cripto/ações) rastreados no pipeline.
+    columns:
+      - name: ativo_id
+        tests:
+          - unique
+          - not_null
+      - name: symbol
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_tempo
+    description: Dimensão de tempo por janela de agregação de 1 minuto.
+    columns:
+      - name: tempo_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_price_ticks
+    description: Fato central — uma linha por ativo x janela de tempo.
+    columns:
+      - name: price_tick_id
+        tests:
+          - unique
+          - not_null
+      - name: ativo_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_ativo')
+                field: ativo_id
+      - name: tempo_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_tempo')
+                field: tempo_id
+      - name: avg_price
+        tests:
+          - not_null

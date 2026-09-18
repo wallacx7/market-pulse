@@ -1,0 +1,28 @@
+# Segredos
+.env
+
+# Dados brutos ingeridos localmente — não versionados (podem crescer sem limite)
+data/bronze/**/*.jsonl
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Airflow
+dags/__pycache__/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Claude Code local state (not project content)
+.claude/

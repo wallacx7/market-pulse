@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_price_ticks
+    description: Um registro por símbolo e janela de 1 minuto, chave surrogate gerada.
+    columns:
+      - name: price_tick_id
+        tests:
+          - unique
+          - not_null
+      - name: symbol
+        tests:
+          - not_null
+      - name: window_start
+        tests:
+          - not_null
+      - name: avg_price
+        tests:
+          - not_null

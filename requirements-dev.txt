@@ -1,0 +1,2 @@
+# Deps to run tests/ locally and in CI (in addition to requirements.txt).
+pytest>=8.0
